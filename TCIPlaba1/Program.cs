@@ -1,9 +1,16 @@
+using TCIPlaba1;
+using Microsoft.EntityFrameworkCore;
+
 //PM> Scaffold-DbContext "Server= LAPTOP-J5R1H9E6; Database=ICTPLaba1; Trusted_Connection=True; Trust Server Certificate=True; " Microsoft.EntityFrameworkCore.SqlServer -f
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<Ictplaba1Context>(option => option.UseSqlServer(
+builder.Configuration.GetConnectionString("DefaultConnection")
+));
 
 var app = builder.Build();
 
