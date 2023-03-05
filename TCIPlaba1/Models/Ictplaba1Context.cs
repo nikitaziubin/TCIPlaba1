@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 
-namespace TCIPlaba1;
+namespace TCIPlaba1.Models;
 
 public partial class Ictplaba1Context : DbContext
 {
@@ -34,7 +33,7 @@ public partial class Ictplaba1Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server= LAPTOP-J5R1H9E6; Database=ICTPLaba1; Trusted_Connection=True; Trust Server Certificate=True; ");
+        => optionsBuilder.UseSqlServer("Server= LAPTOP-J5R1H9E6; Database=ICTPLaba1; Trusted_Connection=True; Trust Server Certificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,9 +41,7 @@ public partial class Ictplaba1Context : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Clubs__3214EC271E05CBE3");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Address)
                 .HasMaxLength(50)
                 .HasColumnName("address");
@@ -60,7 +57,9 @@ public partial class Ictplaba1Context : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Division__3214EC2727CC5F5B");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("ID");
             entity.Property(e => e.DivisionOrLeague).HasColumnName("division_or_league");
             entity.Property(e => e.Level).HasColumnName("level");
             entity.Property(e => e.Name)
@@ -99,24 +98,46 @@ public partial class Ictplaba1Context : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Matches__3214EC277BC61D42");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Date).HasColumnType("date");
             entity.Property(e => e.Division).HasColumnName("division");
+            entity.Property(e => e.Stadium).HasColumnName("stadium");
+
+            entity.HasOne(d => d.DivisionNavigation).WithMany(p => p.Matches)
+                .HasForeignKey(d => d.Division)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Matches_Divisions");
+
+            entity.HasOne(d => d.StadiumNavigation).WithMany(p => p.Matches)
+                .HasForeignKey(d => d.Stadium)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Matches_Stadium");
         });
 
         modelBuilder.Entity<Participant>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Particip__3214EC275E062F1E");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Goals).HasColumnName("goals");
             entity.Property(e => e.Match).HasColumnName("match");
             entity.Property(e => e.Team).HasColumnName("team");
             entity.Property(e => e.TeamRole).HasColumnName("team_role");
+
+            entity.HasOne(d => d.MatchNavigation).WithMany(p => p.Participants)
+                .HasForeignKey(d => d.Match)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Participants_Matches");
+
+            entity.HasOne(d => d.TeamNavigation).WithMany(p => p.Participants)
+                .HasForeignKey(d => d.Team)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Participants_Teams");
+
+            entity.HasOne(d => d.TeamRoleNavigation).WithMany(p => p.Participants)
+                .HasForeignKey(d => d.TeamRole)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Participants_Team_role");
         });
 
         modelBuilder.Entity<Stadium>(entity =>
@@ -147,6 +168,11 @@ public partial class Ictplaba1Context : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
+
+            entity.HasOne(d => d.ClubNavigation).WithMany(p => p.Teams)
+                .HasForeignKey(d => d.Club)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Clubs");
         });
 
         modelBuilder.Entity<TeamRole>(entity =>

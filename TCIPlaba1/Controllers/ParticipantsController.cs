@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using TCIPlaba1;
+using TCIPlaba1.Models;
+using TCIPlaba1.NewFolder;
 
 namespace TCIPlaba1.Controllers
 {
@@ -21,9 +22,14 @@ namespace TCIPlaba1.Controllers
         // GET: Participants
         public async Task<IActionResult> Index()
         {
-              return _context.Participants != null ? 
-                          View(await _context.Participants.ToListAsync()) :
-                          Problem("Entity set 'Ictplaba1Context.Participants'  is null.");
+            var ictplaba1Context = await _context.Participants.Include(p => p.MatchNavigation).Include(p => p.TeamNavigation).Include(p => p.TeamRoleNavigation).ToListAsync();
+            var matchconex = await _context.Matches.Include(p => p.DivisionNavigation).Include(p => p.StadiumNavigation).ToListAsync();
+            var model = new MatchAndParticipantsVM()
+            {
+                match = matchconex,
+                participant = ictplaba1Context
+            };
+            return View(model);
         }
 
         // GET: Participants/Details/5
@@ -33,20 +39,29 @@ namespace TCIPlaba1.Controllers
             {
                 return NotFound();
             }
+            var division = await _context.Divisions.Include(p => p.Matches).ToListAsync();
+            var stadium = await _context.Stadia.Include(p => p.Matches).ToListAsync();
 
-            var participant = await _context.Participants
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (participant == null)
+            var match = new MatchAndParticipantsVM()
+            {
+                division = division,
+                stadium = stadium
+            };
+
+            if (match == null)
             {
                 return NotFound();
             }
 
-            return View(participant);
+            return View(match);
         }
 
         // GET: Participants/Create
         public IActionResult Create()
         {
+            ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id");
+            ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id");
+            ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id");
             return View();
         }
 
@@ -57,12 +72,15 @@ namespace TCIPlaba1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Match,Team,TeamRole,Goals")] Participant participant)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(participant);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            _context.Add(participant);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            //if (ModelState.IsValid)
+            //{
+            //}
+            ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id", participant.Match);
+            ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id", participant.Team);
+            ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id", participant.TeamRole);
             return View(participant);
         }
 
@@ -79,6 +97,9 @@ namespace TCIPlaba1.Controllers
             {
                 return NotFound();
             }
+            ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id", participant.Match);
+            ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id", participant.Team);
+            ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id", participant.TeamRole);
             return View(participant);
         }
 
@@ -114,6 +135,9 @@ namespace TCIPlaba1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id", participant.Match);
+            ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id", participant.Team);
+            ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id", participant.TeamRole);
             return View(participant);
         }
 
@@ -125,14 +149,17 @@ namespace TCIPlaba1.Controllers
                 return NotFound();
             }
 
-            var participant = await _context.Participants
+            var match = await _context.Matches
+                .Include(p => p.StadiumNavigation)
+                .Include(p => p.DivisionNavigation)
+                .Include(p => p.Participants)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (participant == null)
+            if (match == null)
             {
                 return NotFound();
             }
 
-            return View(participant);
+            return View(match);
         }
 
         // POST: Participants/Delete/5
@@ -144,10 +171,10 @@ namespace TCIPlaba1.Controllers
             {
                 return Problem("Entity set 'Ictplaba1Context.Participants'  is null.");
             }
-            var participant = await _context.Participants.FindAsync(id);
-            if (participant != null)
+            var match= await _context.Matches.FindAsync(id);
+            if (match != null)
             {
-                _context.Participants.Remove(participant);
+                _context.Matches.Remove(match);
             }
             
             await _context.SaveChangesAsync();

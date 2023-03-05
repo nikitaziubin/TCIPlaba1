@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TCIPlaba1;
+namespace TCIPlaba1.Models;
 
 public partial class Club
 {
@@ -12,4 +12,6 @@ public partial class Club
     public DateTime? CreateDate { get; set; }
 
     public string Address { get; set; } = null!;
+
+    public virtual ICollection<Team> Teams { get; } = new List<Team>();
 }

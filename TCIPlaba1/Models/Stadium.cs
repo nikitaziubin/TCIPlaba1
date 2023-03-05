@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TCIPlaba1;
+namespace TCIPlaba1.Models;
 
 public partial class Stadium
 {
@@ -14,4 +14,6 @@ public partial class Stadium
     public int? Capacity { get; set; }
 
     public int? MaxCapacity { get; set; }
+
+    public virtual ICollection<Match> Matches { get; } = new List<Match>();
 }

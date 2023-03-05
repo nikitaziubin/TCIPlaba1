@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TCIPlaba1;
+namespace TCIPlaba1.Models;
 
 public partial class England
 {

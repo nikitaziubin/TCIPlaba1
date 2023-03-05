@@ -1,4 +1,4 @@
-namespace TCIPlaba1.Models
+﻿namespace TCIPlaba1.Models
 {
     public class ErrorViewModel
     {
@@ -7,3 +7,4 @@ namespace TCIPlaba1.Models
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
 }
+

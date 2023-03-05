@@ -1,5 +1,6 @@
 using TCIPlaba1;
 using Microsoft.EntityFrameworkCore;
+using TCIPlaba1.Models;
 
 //PM> Scaffold-DbContext "Server= LAPTOP-J5R1H9E6; Database=ICTPLaba1; Trusted_Connection=True; Trust Server Certificate=True; " Microsoft.EntityFrameworkCore.SqlServer -f
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TCIPlaba1;
+namespace TCIPlaba1.Models;
 
 public partial class Division
 {
@@ -12,4 +12,6 @@ public partial class Division
     public byte Level { get; set; }
 
     public bool DivisionOrLeague { get; set; }
+
+    public virtual ICollection<Match> Matches { get; } = new List<Match>();
 }

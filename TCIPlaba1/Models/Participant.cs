@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
-namespace TCIPlaba1;
+namespace TCIPlaba1.Models;
 
 public partial class Participant
 {
     public int Id { get; set; }
-    [Display(Name = "Матч")]
+
     public int Match { get; set; }
-    [Display(Name = "Команда")]
+
     public int Team { get; set; }
-    [Display(Name = "Роль Команди")]
+
     public byte TeamRole { get; set; }
-    [Display(Name = "Голи")]
+
     public byte Goals { get; set; }
+
+    public virtual Match MatchNavigation { get; set; } = null!;
+
+    public virtual Team TeamNavigation { get; set; } = null!;
+
+    public virtual TeamRole TeamRoleNavigation { get; set; } = null!;
 }
