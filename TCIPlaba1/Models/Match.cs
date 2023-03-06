@@ -15,7 +15,7 @@ public partial class Match
 
     public virtual Division DivisionNavigation { get; set; } = null!;
 
-    public virtual ICollection<Participant> Participants { get; } = new List<Participant>();
+    public virtual ICollection<Participant> Participants { get; set; } = new List<Participant>();
 
     public virtual Stadium StadiumNavigation { get; set; } = null!;
 }

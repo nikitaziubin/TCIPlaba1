@@ -1,4 +1,4 @@
-﻿@model TCIPlaba1.NewFolder.MatchAndParticipantsVM
+﻿@model TCIPlaba1.Models.Match
 
 @{
     ViewData["Title"] = "Details";
@@ -6,100 +6,63 @@
 
 <h1>Details</h1>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-					@Html.DisplayNameFor(model => model.match.FirstOrDefault().Date)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.stadium.FirstOrDefault().Name)
-			<th>
-					@Html.DisplayNameFor(model => model.stadium.FirstOrDefault().Address)
-			</th>
-			<th>
-					@Html.DisplayNameFor(model => model.stadium.FirstOrDefault().Capacity)
-			</th>
-			<th>
-					@Html.DisplayNameFor(model => model.participant.FirstOrDefault().Goals)
-			</th>
-			<th>
-					@Html.DisplayNameFor(model => model.participant.FirstOrDefault().MatchNavigation)
-			</th>
-			<th>
-					@Html.DisplayNameFor(model => model.participant.FirstOrDefault().TeamNavigation)
-			</th>
-			<th>
-					@Html.DisplayNameFor(model => model.participant.FirstOrDefault().TeamRoleNavigation)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model.stadium)
-		{    
-			<tr>
-				@foreach (var match in item.Matches)
-				{
-					if (match.StadiumNavigation.Id == item.Id)
-					{
-						<td>
-							@Html.DisplayFor(modelItem => match.Date)		
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => match.StadiumNavigation.Name)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => match.StadiumNavigation.Address)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => match.StadiumNavigation.Capacity)
-						</td>
-						break;
-					}
-				}
-				@*<td>
-					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-				</td>*@
+<div>
+	<dt class="col-sm-2">
+		@Html.DisplayNameFor(model => model.Date)
+	</dt>
+	<dd class="col-sm-10">
+		@Html.DisplayFor(model => model.Date)
+	</dd>
+</div>
 
-			</tr>
-		}
-	</tbody>
-</table>
-@*<div>
-	<h4>Participant</h4>
+<div>
+	<h4>Stadium</h4>
 	<hr />
 	<dl class="row">
 		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Goals)
+			@Html.DisplayNameFor(model => model.StadiumNavigation.Name)
 		</dt>
 		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Goals)
+			@Html.DisplayFor(model => model.StadiumNavigation.Name)
 		</dd>
 		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.MatchNavigation)
+			@Html.DisplayNameFor(model => model.StadiumNavigation.Address)
 		</dt>
 		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.MatchNavigation.Id)
+			@Html.DisplayFor(model => model.StadiumNavigation.Address)
 		</dd>
 		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.TeamNavigation)
+			@Html.DisplayNameFor(model => model.StadiumNavigation.Capacity)
 		</dt>
 		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.TeamNavigation.Id)
+			@Html.DisplayFor(model => model.StadiumNavigation.Capacity)
+		</dd>
+	</dl>
+	@if (Model.DivisionNavigation.DivisionOrLeague == true)
+	{
+		<h4>League</h4>
+	}
+	@if (Model.DivisionNavigation.DivisionOrLeague != true)
+	{
+		<h4>Division</h4>
+	}
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.DivisionNavigation.Name)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.DivisionNavigation.Name)
 		</dd>
 		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.TeamRoleNavigation)
+			@Html.DisplayNameFor(model => model.DivisionNavigation.Level)
 		</dt>
 		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.TeamRoleNavigation.Id)
+			@Html.DisplayFor(model => model.DivisionNavigation.Level)
 		</dd>
 	</dl>
 </div>
 <div>
-	<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+	@*<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |*@
 	<a asp-action="Index">Back to List</a>
 </div>
-*@

@@ -39,14 +39,10 @@ namespace TCIPlaba1.Controllers
             {
                 return NotFound();
             }
-            var division = await _context.Divisions.Include(p => p.Matches).ToListAsync();
-            var stadium = await _context.Stadia.Include(p => p.Matches).ToListAsync();
+            //var division = await _context.Divisions.Include(p => p.Matches).ToListAsync();
+            //var stadium = await _context.Stadia.Include(p => p.Matches).ToListAsync();
+            var match = await _context.Matches.Include(p => p.DivisionNavigation).Include(p => p.StadiumNavigation).FirstOrDefaultAsync(m => m.Id == id);
 
-            var match = new MatchAndParticipantsVM()
-            {
-                division = division,
-                stadium = stadium
-            };
 
             if (match == null)
             {
@@ -72,12 +68,13 @@ namespace TCIPlaba1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Match,Team,TeamRole,Goals")] Participant participant)
         {
-            _context.Add(participant);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-            //if (ModelState.IsValid)
-            //{
-            //}
+            
+            if (ModelState.IsValid)
+            {
+                _context.Add(participant);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
             ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id", participant.Match);
             ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id", participant.Team);
             ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id", participant.TeamRole);
@@ -138,7 +135,15 @@ namespace TCIPlaba1.Controllers
             ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id", participant.Match);
             ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id", participant.Team);
             ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id", participant.TeamRole);
-            return View(participant);
+            //var match = new Match();
+            //match.Participants.Where(p => p.Id == id).FirstOrDefault().Goals = participant.Goals;
+            //var particcipantID = _context.Model.
+            //participant.Goals = participant.Goals;
+            _context.Update(participant);
+            _context.SaveChanges();
+           
+            //return View( participant);
+            return RedirectToAction("Index", "Participants");
         }
 
         // GET: Participants/Delete/5
