@@ -4,14 +4,15 @@
 	ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Matches</h1>
 
 <p>
-	<a asp-action="Create">Create New Participant</a>
+	<a asp-action="Create" asp-route-area="Participants">Create New Participant</a>
 </p>
 <p>
-	<a asp-action="CreateMatch">Create New Match</a>
+	<a asp-action="CreateMatches" asp-route-area="Matches">Create New</a>
 </p>
+
 <table class="table">
 	<thead>
 		<tr>
