@@ -7,10 +7,7 @@
 <h1>Matches</h1>
 
 <p>
-	<a asp-action="Create" asp-route-area="Participants">Create New Participant</a>
-</p>
-<p>
-	<a asp-action="Create" asp-route-area="Matches">Create New</a>
+	<a asp-action="Create" asp-controller="ParticipantParticipantMatches">Create New</a>
 </p>
 
 <table class="table">
@@ -30,9 +27,6 @@
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().Goals)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().MatchNavigation)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().TeamNavigation)

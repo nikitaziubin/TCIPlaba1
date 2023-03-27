@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TCIPlaba1.Models;
 
 public partial class Match
 {
-    public int Id { get; set; }
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	public int Id { get; set; }
 
     public DateTime Date { get; set; }
 

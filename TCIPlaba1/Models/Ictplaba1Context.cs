@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using TCIPlaba1.Models;
 
 namespace TCIPlaba1.Models;
 
@@ -193,4 +194,6 @@ public partial class Ictplaba1Context : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+    public DbSet<TCIPlaba1.Models.ParticipantParticipantMatch> ParticipantParticipantMatch { get; set; } = default!;
 }

@@ -66,19 +66,21 @@ namespace TCIPlaba1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Match,Team,TeamRole,Goals")] Participant participant)
+        public async Task<IActionResult> Create([Bind("Id,Match,Team,TeamRole,Goals")] Participant participant1,
+            [Bind("Id,Match,Team,TeamRole,Goals")] Participant participant2)
         {
-            
-            if (ModelState.IsValid)
-            {
-                _context.Add(participant);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id", participant.Match);
-            ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id", participant.Team);
-            ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id", participant.TeamRole);
-            return View(participant);
+            _context.Add(participant1);
+            _context.Add(participant2);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            //if (ModelState.IsValid)
+            //{
+                
+            //}
+            //ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id", participant.Match);
+            //ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id", participant.Team);
+            //ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id", participant.TeamRole);
+            //return View(participant);
         }
 
         // GET: Participants/Edit/5

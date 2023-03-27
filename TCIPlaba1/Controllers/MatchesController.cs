@@ -60,16 +60,46 @@ namespace TCIPlaba1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Date,Division,Stadium")] Match match)
         {
-            if (ModelState.IsValid)
-            {
+
                 _context.Add(match);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["Division"] = new SelectList(_context.Divisions, "Id", "Id", match.Division);
-            ViewData["Stadium"] = new SelectList(_context.Stadia, "Id", "Id", match.Stadium);
-            return View(match);
+            //if (ModelState.IsValid)
+            //{
+            //}
+            //ViewData["Division"] = new SelectList(_context.Divisions, "Id", "Id", match.Division);
+            //ViewData["Stadium"] = new SelectList(_context.Stadia, "Id", "Id", match.Stadium);
+
+            //return View(match);
         }
+
+        public IActionResult CreateM()
+        {
+            ViewData["Division"] = new SelectList(_context.Divisions, "Id", "Id");
+            ViewData["Stadium"] = new SelectList(_context.Stadia, "Id", "Id");
+            return View();
+        }
+
+        // POST: Matches/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateM([Bind("Id,Date,Division,Stadium")] Match match)
+        {
+
+            _context.Add(match);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            //if (ModelState.IsValid)
+            //{
+            //}
+            //ViewData["Division"] = new SelectList(_context.Divisions, "Id", "Id", match.Division);
+            //ViewData["Stadium"] = new SelectList(_context.Stadia, "Id", "Id", match.Stadium);
+
+            //return View(match);
+        }
+
 
         // GET: Matches/Edit/5
         public async Task<IActionResult> Edit(int? id)
