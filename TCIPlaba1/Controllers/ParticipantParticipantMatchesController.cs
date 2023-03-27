@@ -21,9 +21,11 @@ namespace TCIPlaba1.Controllers
         // GET: ParticipantParticipantMatches
         public async Task<IActionResult> Index()
         {
-              return _context.ParticipantParticipantMatch != null ? 
-                          View(await _context.ParticipantParticipantMatch.ToListAsync()) :
-                          Problem("Entity set 'Ictplaba1Context.ParticipantParticipantMatch'  is null.");
+            //return _context.ParticipantParticipantMatch != null ? 
+            //            View(await _context.ParticipantParticipantMatch.ToListAsync()) :
+            //            Problem("Entity set 'Ictplaba1Context.ParticipantParticipantMatch'  is null.");
+            var ictplaba1Context = _context.Matches.Include(m => m.DivisionNavigation).Include(m => m.StadiumNavigation);
+            return View(await ictplaba1Context.ToListAsync());
         }
 
         // GET: ParticipantParticipantMatches/Details/5
@@ -79,7 +81,8 @@ namespace TCIPlaba1.Controllers
 
             _context.Add(participant2);
 			await _context.SaveChangesAsync();
-			return RedirectToAction(nameof(Index));
+			//return RedirectToAction(nameof(ParticipantsController.Index));
+			return Redirect($"/Participants/Details/{match.Id}");
 			//if (ModelState.IsValid)
    //         {
                 

@@ -66,11 +66,9 @@ namespace TCIPlaba1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Match,Team,TeamRole,Goals")] Participant participant1,
-            [Bind("Id,Match,Team,TeamRole,Goals")] Participant participant2)
+        public async Task<IActionResult> Create([Bind("Id,Match,Team,TeamRole,Goals")] Participant participant)
         {
-            _context.Add(participant1);
-            _context.Add(participant2);
+            _context.Add(participant);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
             //if (ModelState.IsValid)
