@@ -23,8 +23,11 @@ namespace TCIPlaba1.Models
         public DateTime Date { get; set; }
 
         public byte Division { get; set; }
+        public virtual Division DivisionNavigation { get; set; } = null!;
+
 
         public byte Stadium { get; set; }
+
 
     }
 }

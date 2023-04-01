@@ -49,7 +49,14 @@ namespace TCIPlaba1.Controllers
         // GET: ParticipantParticipantMatches/Create
         public IActionResult Create()
         {
-            return View();
+            //var divisions = _context.Divisions.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = d.Name }).ToList();
+            //ViewBag.Divisions = divisions;
+            ViewData["Divisions"] = new SelectList(_context.Divisions, "Id", "Name");
+            ViewData["Stadium"] = new SelectList(_context.Divisions, "Id", "Name");
+            ViewData["Team1"] = new SelectList(_context.Teams, "Id", "Name");
+			ViewData["Team2"] = new SelectList(_context.Teams, "Id", "Name");
+
+			return View();
         }
 
         // POST: ParticipantParticipantMatches/Create
@@ -63,8 +70,8 @@ namespace TCIPlaba1.Controllers
             Participant participant2 = new Participant();
             Match match = new Match();
             participant1.Team = participantParticipantMatch.Team1;
-            participant1.TeamRole= participantParticipantMatch.TeamRole1;
-            participant1.Goals= participantParticipantMatch.Goals1;
+            participant1.TeamRole = participantParticipantMatch.TeamRole1;
+            participant1.Goals = participantParticipantMatch.Goals1;
 
             participant2.Team = participantParticipantMatch.Team2;
             participant2.TeamRole = participantParticipantMatch.TeamRole2;
@@ -76,18 +83,18 @@ namespace TCIPlaba1.Controllers
             _context.Add(match);
             _context.SaveChanges();
             participant1.Match = match.Id;
-            participant2.Match = match.Id;      
+            participant2.Match = match.Id;
             _context.Add(participant1);
 
             _context.Add(participant2);
-			await _context.SaveChangesAsync();
-			//return RedirectToAction(nameof(ParticipantsController.Index));
-			return Redirect($"/Participants/Details/{match.Id}");
-			//if (ModelState.IsValid)
-   //         {
-                
-   //         }
-   //         return View(participantParticipantMatch);
+            await _context.SaveChangesAsync();
+            //return RedirectToAction(nameof(ParticipantsController.Index));
+            return Redirect($"/Participants/Details/{match.Id}");
+            //if (ModelState.IsValid)
+            //         {
+
+            //         }
+            //         return View(participantParticipantMatch);
         }
 
         // GET: ParticipantParticipantMatches/Edit/5
@@ -173,14 +180,14 @@ namespace TCIPlaba1.Controllers
             {
                 _context.ParticipantParticipantMatch.Remove(participantParticipantMatch);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ParticipantParticipantMatchExists(int id)
         {
-          return (_context.ParticipantParticipantMatch?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.ParticipantParticipantMatch?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

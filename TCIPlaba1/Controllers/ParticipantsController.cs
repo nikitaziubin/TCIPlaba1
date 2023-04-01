@@ -94,10 +94,9 @@ namespace TCIPlaba1.Controllers
             {
                 return NotFound();
             }
-            ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id", participant.Match);
-            ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id", participant.Team);
-            ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id", participant.TeamRole);
-            return View(participant);
+			ViewData["Team"] = new SelectList(_context.Teams, "Id", "Name", participant.Team);
+			ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Name", participant.TeamRole);
+			return View(participant);
         }
 
         // POST: Participants/Edit/5
@@ -132,9 +131,8 @@ namespace TCIPlaba1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id", participant.Match);
-            ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id", participant.Team);
-            ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Id", participant.TeamRole);
+            ViewData["Team"] = new SelectList(_context.Teams, "Id", "Name", participant.Team);
+            ViewData["TeamRole"] = new SelectList(_context.TeamRoles, "Id", "Name", participant.TeamRole);
             //var match = new Match();
             //match.Participants.Where(p => p.Id == id).FirstOrDefault().Goals = participant.Goals;
             //var particcipantID = _context.Model.

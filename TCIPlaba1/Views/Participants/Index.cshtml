@@ -14,25 +14,19 @@
 	<thead>
 		<tr>
 			<th>
+
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().TeamNavigation)
+			</th>
+			<th>
 				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().Goals)
 
 			<th>
-				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().TeamNavigation)
+					@Html.DisplayNameFor(model => model.participant.FirstOrDefault().Goals)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().TeamRoleNavigation)
-			</th>
-			<th>
-					
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().Goals)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().TeamNavigation)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.participant.FirstOrDefault().TeamRoleNavigation)
+					@Html.DisplayNameFor(model => model.participant.FirstOrDefault().TeamNavigation)
 			</th>
 			<th></th>
 		</tr>
@@ -41,24 +35,35 @@
 		@foreach (var item in Model.match)
 		{
 			<tr>
-				@foreach (var participants in item.Participants)
+				@foreach (var participants in item.Participants.OrderBy(p => p.TeamRole))
 				{
-					<td>
-						@Html.DisplayFor(modelItem => participants.Goals)
-					</td>
+					if (participants.TeamRole == 1)
+					{
+						<td>
+							<a asp-action="Edit" asp-route-id="@participants.Id">Edit</a>
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => participants.TeamNavigation.Name)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => participants.Goals)
+						</td>
+					}
+					else
+					{
+						<td>
+							@Html.DisplayFor(modelItem => participants.Goals)
+						</td>
 
-					<td>
-						@Html.DisplayFor(modelItem => participants.TeamNavigation.Name)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => participants.TeamRoleNavigation.Name)
-					</td>
-					<td>
-						<a asp-action="Edit" asp-route-id="@participants.Id">Edit</a>
-					</td>
-					
+						<td>
+							@Html.DisplayFor(modelItem => participants.TeamNavigation.Name)
+						</td>
+						<td>
+							<a asp-action="Edit" asp-route-id="@participants.Id">Edit</a>
+						</td>
+					}
 				}
-			<td>
+				<td>
 					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
 					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
 				</td>
@@ -67,3 +72,27 @@
 		}
 	</tbody>
 </table>
+<div class="container">
+	<div id="chart1"></div>
+</div>
+@section scripts{
+
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script>
+		google.charts.load('current', { 'packages': ['corechart'] });
+		google.charts.setOnLoadCallback(drawChart);
+
+		function drawChart() {
+			$.get('/api/Diagram1/JsonData', function (JsonData) {
+				data = google.visualization.arrayToDataTable(JsonData, false);
+				var options = {
+					title: "Співвідношення кількості книжок та категорій",
+					width: 500,
+					height: 400
+				};
+				chart = new google.visualization.PieChart(document.getElementById('chart1'));
+				chart.draw(data, options);
+			});
+		}
+	</script>
+}
