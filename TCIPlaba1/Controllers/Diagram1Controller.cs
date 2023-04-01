@@ -18,8 +18,8 @@ namespace TCIPlaba1.Controllers
 		[HttpGet("JsonData")]
 		public JsonResult JsonData()
 		{
-			System.FormattableString sequenceMaxQuery = $"SELECT name, ID,(SELECT COUNT(stadium)FROM Matches WHERE stadium = Stadium.ID)C FROM Stadium";
-			var sequenceQueryResult = _context.Database.SqlQuery<string>(sequenceMaxQuery);
+			//System.FormattableString sequenceMaxQuery = $"SELECT name, ID,(SELECT COUNT(stadium)FROM Matches WHERE stadium = Stadium.ID)C FROM Stadium";
+			//var sequenceQueryResult = _context.Database.SqlQuery<string>(sequenceMaxQuery);
 
 
 			//var categories = _context.Matches.Include(c => c.Goals).ToList();
@@ -29,7 +29,7 @@ namespace TCIPlaba1.Controllers
 
 			foreach (var c in categories)
 			{
-				catBook.Add(new object[] { c.Name, c.Matches.Count});
+				catBook.Add(new object[] { c.Name, c.Id});
 			}
 
 			return new JsonResult(catBook);
