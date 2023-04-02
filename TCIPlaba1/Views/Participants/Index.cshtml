@@ -86,8 +86,8 @@
 			$.get('/api/Diagram1/JsonData', function (JsonData) {
 				data = google.visualization.arrayToDataTable(JsonData, false);
 				var options = {
-					title: "Співвідношення кількості книжок та категорій",
 					width: 500,
+					title: "Співвідношення кількості Матчів до Стадіонів",
 					height: 400
 				};
 				chart = new google.visualization.PieChart(document.getElementById('chart1'));

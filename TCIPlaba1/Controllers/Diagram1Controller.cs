@@ -19,17 +19,17 @@ namespace TCIPlaba1.Controllers
 		public JsonResult JsonData()
 		{
 			//System.FormattableString sequenceMaxQuery = $"SELECT name, ID,(SELECT COUNT(stadium)FROM Matches WHERE stadium = Stadium.ID)C FROM Stadium";
-			//var sequenceQueryResult = _context.Database.SqlQuery<string>(sequenceMaxQuery);
-
 
 			//var categories = _context.Matches.Include(c => c.Goals).ToList();
+			var ictplaba1Context =  _context.Matches.Include(p => p.StadiumNavigation).ToList();
 			var categories = _context.Stadia.ToList();
 			List<object> catBook = new List<object>();
 			catBook.Add(new[] { "Категорія", "Кількість книжок" });
 
 			foreach (var c in categories)
 			{
-				catBook.Add(new object[] { c.Name, c.Id});
+				//catBook.Add(new object[] { c.Name, c.Id});
+				catBook.Add(new object[] { c.Name, c.Matches.Count});
 			}
 
 			return new JsonResult(catBook);
