@@ -24,7 +24,7 @@ namespace TCIPlaba1.Controllers
 			var ictplaba1Context =  _context.Matches.Include(p => p.StadiumNavigation).ToList();
 			var categories = _context.Stadia.ToList();
 			List<object> catBook = new List<object>();
-			catBook.Add(new[] { "Категорія", "Кількість книжок" });
+			catBook.Add(new[] { "Матч", "Кількість матчів" });
 
 			foreach (var c in categories)
 			{

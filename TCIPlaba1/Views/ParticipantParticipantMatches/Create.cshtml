@@ -16,9 +16,8 @@
 				<select asp-for="Team1" class="form-control" asp-items="ViewBag.Team1"></select>
 			</div>
 			<div class="form-group">
-				<label asp-for="TeamRole1" class="control-label"></label>
-				<input asp-for="TeamRole1" class="form-control" />
-				<span asp-validation-for="TeamRole1" class="text-danger"></span>
+				<label asp-for="TeamRole1" class="control-label">Виїздна чи домашня команда </label>
+				<select asp-for="TeamRole1" class="form-control" asp-items="ViewBag.TeamRole1"></select>
 			</div>
 			<div class="form-group">
 				<label asp-for="Goals1" class="control-label">Забиті голи першої команди</label>
@@ -30,9 +29,8 @@
 				<select asp-for="Team2" class="form-control" asp-items="ViewBag.Team2"></select>
 			</div>
 			<div class="form-group">
-				<label asp-for="TeamRole2" class="control-label"></label>
-				<input asp-for="TeamRole2" class="form-control" />
-				<span asp-validation-for="TeamRole2" class="text-danger"></span>
+				<label asp-for="TeamRole2" class="control-label">Виїздна чи домашня команда </label>
+				<select asp-for="TeamRole2" class="form-control" asp-items="ViewBag.TeamRole2"></select>
 			</div>
 			<div class="form-group">
 				<label asp-for="Goals2" class="control-label">Забиті голи другої команди</label>
@@ -61,6 +59,6 @@
 </div>
 
 <div>
-	<a asp-action="Index">Back to List</a>
+	<a asp-action="Index" asp-controller="Participants">Back to List</a>
 </div>
 

@@ -52,9 +52,11 @@ namespace TCIPlaba1.Controllers
             //var divisions = _context.Divisions.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = d.Name }).ToList();
             //ViewBag.Divisions = divisions;
             ViewData["Divisions"] = new SelectList(_context.Divisions, "Id", "Name");
-            ViewData["Stadium"] = new SelectList(_context.Divisions, "Id", "Name");
+            ViewData["Stadium"] = new SelectList(_context.Stadia, "Id", "Name");
             ViewData["Team1"] = new SelectList(_context.Teams, "Id", "Name");
 			ViewData["Team2"] = new SelectList(_context.Teams, "Id", "Name");
+			ViewData["TeamRole1"] = new SelectList(_context.TeamRoles, "Id", "Name");
+			ViewData["TeamRole2"] = new SelectList(_context.TeamRoles, "Id", "Name");
 
 			return View();
         }
