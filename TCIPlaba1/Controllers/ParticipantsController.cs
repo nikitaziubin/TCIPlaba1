@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using TCIPlaba1.Models;
 using TCIPlaba1.NewFolder;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 
 namespace TCIPlaba1.Controllers
 {
@@ -280,6 +281,47 @@ namespace TCIPlaba1.Controllers
 			}
 			return RedirectToAction(nameof(Index));
 
+		}
+		public ActionResult Export()
+		{
+			using (XLWorkbook workbook = new XLWorkbook())
+			{
+				var matchse = _context.Matches.Include(p=>p.Participants).ToList();
+				var teams = _context.Teams.ToList();
+				// Тут, для прикладу ми пишемо усі книжки з БД, в своїх проєктах ТАК НЕ РОБИТИ (писати лише вибрані)
+
+				var worksheet = workbook.Worksheets.Add("Match");
+				worksheet.Cell("A1").Value = "Ім'я прешої команди";
+				worksheet.Cell("B1").Value = "Голи першої команди";
+				worksheet.Cell("D1").Value = "Голи Другої команди";
+				worksheet.Cell("C1").Value = "Ім'я Другої команди";
+				worksheet.Row(1).Style.Font.Bold = true;
+				int j = 2; 
+				foreach (var c in matchse)
+				{
+					var participants = c.Participants.ToList();
+					int i = 1;
+					var teamName1 = teams.Where(t => t.Id == participants[0].Team).Select(t => t.Name).FirstOrDefault();
+					worksheet.Cell(j, i).Value = teamName1;
+					worksheet.Cell(j, i + 1).Value = participants[0].Goals;
+					i += 2;
+					var teamName2 = teams.Where(t => t.Id == participants[1].Team).Select(t => t.Name).FirstOrDefault();
+					worksheet.Cell(j, i).Value = participants[1].Goals;
+					worksheet.Cell(j, i+1).Value = teamName2;
+					i += 2;
+					j++;
+				}
+				using (var stream = new MemoryStream())
+				{
+					workbook.SaveAs(stream);
+					stream.Flush();
+					return new FileContentResult(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+					{
+						// Змініть назву файла відповідно до тематики Вашого проєкту
+						FileDownloadName = $"library{DateTime.UtcNow.ToShortDateString()}.xlsx"
+					};
+				}
+			}
 		}
 	}
 }
