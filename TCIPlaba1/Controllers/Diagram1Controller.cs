@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TCIPlaba1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TCIPlaba1.Controllers
 {
+	//[Authorize(Roles = "admin, user")]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class Diagram1Controller : ControllerBase
@@ -15,6 +17,7 @@ namespace TCIPlaba1.Controllers
 			_context = context;
 		}
 
+		[Authorize(Roles = "admin")]
 		[HttpGet("JsonData")]
 		public JsonResult JsonData()
 		{

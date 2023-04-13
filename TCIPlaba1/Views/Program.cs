@@ -2,15 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using TCIPlaba1.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-
-
-
-
-//PM> Scaffold-DbContext "Server= LAPTOP-J5R1H9E6; Database=ICTPLaba1; Trusted_Connection=True; Trust Server Certificate=True; " Microsoft.EntityFrameworkCore.SqlServer -f
+using DocumentFormat.OpenXml.Spreadsheet;
 
 internal class Program
 {
-	private static void Main(string[] args)
+	private static async Task Main(string[] args)
 	{
 		var builder = WebApplication.CreateBuilder(args);
 
@@ -24,13 +20,29 @@ internal class Program
 		builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlServer(b));
 
 		builder.Services.AddControllersWithViews();
-		builder.Services.AddIdentity<Users, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
+		builder.Services.AddIdentity<TCIPlaba1.Models.Users, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
 
 
 		var app = builder.Build();
 
-		// Configure the HTTP request pipeline.
-		if (!app.Environment.IsDevelopment())
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            try
+            {
+                var userManager = services.GetRequiredService<UserManager<TCIPlaba1.Models.Users>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                await RoleInitializer.InitializeAsync(userManager, roleManager);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, $"An error occurred while seeding the database. {DateTime.Now}");
+            }
+        }
+
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
 		{
 			app.UseExceptionHandler("/Home/Error");
 			// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -40,13 +52,14 @@ internal class Program
 		app.UseHttpsRedirection();
 		app.UseStaticFiles();
 
+
 		app.UseAuthentication();
-
 		app.UseRouting();
-
+		app.UseAuthorization();
 
 		app.MapControllerRoute(
 			name: "default",
+			//pattern: "{controller=Participants}/{action=Index}/{id?}");
 			pattern: "{controller=Participants}/{action=Index}/{id?}");
 
 		app.Run();

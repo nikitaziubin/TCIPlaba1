@@ -49,7 +49,7 @@ namespace TCIPlaba1.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Login(string returnUrl = null)
+		public IActionResult Login(string returnUrl = "/")
 		{
 			return View(new LoginViewModel { ReturnUrl = returnUrl });
 		}

@@ -72,11 +72,11 @@ namespace TCIPlaba1.Controllers
             Participant participant2 = new Participant();
             Match match = new Match();
             participant1.Team = participantParticipantMatch.Team1;
-            participant1.TeamRole = participantParticipantMatch.TeamRole1;
+            participant1.TeamRole = 2;
             participant1.Goals = participantParticipantMatch.Goals1;
 
             participant2.Team = participantParticipantMatch.Team2;
-            participant2.TeamRole = participantParticipantMatch.TeamRole2;
+            participant2.TeamRole = 1;
             participant2.Goals = participantParticipantMatch.Goals2;
 
             match.Date = participantParticipantMatch.Date;

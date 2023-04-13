@@ -11,6 +11,7 @@ using TCIPlaba1.Models;
 using TCIPlaba1.NewFolder;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.InkML;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TCIPlaba1.Controllers
 {
@@ -56,8 +57,9 @@ namespace TCIPlaba1.Controllers
 			return View(match);
 		}
 
-		// GET: Participants/Create
-		public IActionResult Create()
+        // GET: Participants/Create
+        
+        public IActionResult Create()
 		{
 			ViewData["Match"] = new SelectList(_context.Matches, "Id", "Id");
 			ViewData["Team"] = new SelectList(_context.Teams, "Id", "Id");
@@ -197,7 +199,8 @@ namespace TCIPlaba1.Controllers
 
 		[HttpPost, ActionName("Import")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Import(IFormFile fileExcel)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Import(IFormFile fileExcel)
 		{
 			if (ModelState.IsValid)
 			{
@@ -212,25 +215,6 @@ namespace TCIPlaba1.Controllers
 							// Iterate over all worksheets (in this case, categories)
 							foreach (IXLWorksheet worksheet in workBook.Worksheets)
 							{
-								// worksheet.Name - category name. Try to find it in the database, if not present, create a new one
-								//Stadium stadium;
-								//var c = await _context.Stadia.FirstOrDefaultAsync(p => p.Name.Contains(worksheet.Name));
-								//if (c != null)
-								//{
-								//	stadium = c;
-								//}
-								//else
-								//{
-								//	stadium = new Stadium();
-								//	stadium.Name = worksheet.Name;
-								//	stadium.Capacity = Row.
-								//	stadium.Name = worksheet.Name;
-								//	stadium.Name = worksheet.Name;
-								//	stadium.Info = "from EXCEL";
-								//	// Add to context
-								//	_context.Stadia.Add(stadium);
-								//}
-								// Iterate over all rows
 								foreach (IXLRow row in worksheet.RowsUsed().Skip(1))
 								{
 									try
@@ -241,31 +225,6 @@ namespace TCIPlaba1.Controllers
 										string Cpapacity = row.Cell(3).Value.ToString();
 										stadium.Capacity = Convert.ToInt32(Cpapacity);
 										_context.Stadia.Add(stadium);
-										// If author is present, find it, otherwise add a new author
-										//for (int i = 2; i <= 5; i++)
-										//{
-										//	if (row.Cell(i).Value.ToString().Length > 0)
-										//	{
-										//		Author author;
-										//		var a = await _context.Authors.FirstOrDefaultAsync(aut => aut.Name.Contains(row.Cell(i).Value.ToString()));
-										//		if (a != null)
-										//		{
-										//			author = a;
-										//		}
-										//		else
-										//		{
-										//			author = new Author();
-										//			author.Name = row.Cell(i).Value.ToString();
-										//			author.Info = "from EXCEL";
-										//			// Add to context
-										//			_context.Add(author);
-										//		}
-										//		AuthorBook ab = new AuthorBook();
-										//		ab.Book = stadium;
-										//		ab.Author = author;
-										//		_context.AuthorBooks.Add(ab);
-										//	}
-										//}
 									}
 									catch (Exception e)
 									{
