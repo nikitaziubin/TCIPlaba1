@@ -2,17 +2,31 @@
 
 <h2>Profile</h2>
 
-<div class="form-group">
-	<label asp-for="Email" class="control-label">Email</label>
-	<input asp-for="Email" class="form-control" />
-	<span asp-validation-for="Email" class="text-danger"></span>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Profile">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Year" class="control-label">Year</label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div>
+                <input type="submit" value="Зберегти" />
+            </div>
+
+@*            <div>
+                <button class="btn btn-primary" asp-action="Edit"></button>
+            </div>*@
+        </form>
+    </div>
 </div>
-<div class="form-group">
-	<label asp-for="Year" class="control-label">Year</label>
-	<input asp-for="Year" class="form-control" />
-	<span asp-validation-for="Year" class="text-danger"></span>
-</div>
-<div>
-	<input type="submit" value="Зберегти" />
-</div>
+
+
 

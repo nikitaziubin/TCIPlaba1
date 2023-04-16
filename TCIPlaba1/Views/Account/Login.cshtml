@@ -1,11 +1,11 @@
 ﻿@model TCIPlaba1.NewFolder.LoginViewModel
 
-<h2>Вхід в БІБЛІОТЕКУ</h2>
+<h2>Loggin</h2>
 
 <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
-        <label asp-for="Email"></label><br />
+        <label asp-for="Email">Username</label><br />
         <input asp-for="Email" />
         <span asp-validation-for="Email"></span>
     </div>

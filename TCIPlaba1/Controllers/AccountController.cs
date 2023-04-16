@@ -100,14 +100,14 @@ namespace TCIPlaba1.Controllers
 		}
 
         [HttpGet]
-        public IActionResult Profile(ProfileViewModel model)
+        public IActionResult Profile()
         {
 			//model.Email = curEmail;
 			//model.Password = curPassword;
 			//var user = await _userManager.FindByIdAsync();  FindByIdAsync(Users.Identity.GetUserId());
-			
-			
-            var s = _userManager.Users.FirstOrDefault(s => s.Email == User.Identity.Name);
+
+			ProfileViewModel model = new ProfileViewModel();
+            var s = _userManager.Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
 			model.Email = s.Email;
 			model.Year = s.Year;
             //ViewData["User"] = new SelectList(s);
@@ -116,28 +116,24 @@ namespace TCIPlaba1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Profile(ProfileViewModel model, int t)
+        public async Task<IActionResult> Profile(ProfileViewModel model)
         {
+            //Users user = new Users { Email = model.Email, UserName = model.Email, Year = model.Year };
+            
+            var s = _userManager.Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+			s.Year = model.Year;
+			s.Email = model.Email;
+            var result = await _userManager.UpdateAsync(s);
 
-
-
-            if (ModelState.IsValid)
+            if (result.Succeeded)
             {
-                Users user = new Users { Email = model.Email, UserName = model.Email, Year = model.Year };
-
-                var result = await _userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
+                return RedirectToAction("Index", "Participants");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
                 {
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Participants");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
