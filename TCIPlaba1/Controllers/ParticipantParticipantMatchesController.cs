@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using TCIPlaba1.Models;
 
 namespace TCIPlaba1.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class ParticipantParticipantMatchesController : Controller
     {
         private readonly Ictplaba1Context _context;
@@ -92,11 +94,6 @@ namespace TCIPlaba1.Controllers
             await _context.SaveChangesAsync();
             //return RedirectToAction(nameof(ParticipantsController.Index));
             return Redirect($"/Participants/Details/{match.Id}");
-            //if (ModelState.IsValid)
-            //         {
-
-            //         }
-            //         return View(participantParticipantMatch);
         }
 
         // GET: ParticipantParticipantMatches/Edit/5

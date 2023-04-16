@@ -2,7 +2,7 @@
 
 namespace TCIPlaba1.Models
 {
-	public class Users: IdentityUser
+	public class Users : IdentityUser
 	{
 		public int Year { get; set; }
 	}

@@ -17,7 +17,6 @@ namespace TCIPlaba1.Controllers
 			_context = context;
 		}
 
-		[Authorize(Roles = "admin")]
 		[HttpGet("JsonData")]
 		public JsonResult JsonData()
 		{

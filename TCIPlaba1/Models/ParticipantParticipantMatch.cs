@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TCIPlaba1.Models
 {
+    [Authorize(Roles = "admin")]
     public class ParticipantParticipantMatch
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
